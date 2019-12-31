@@ -41,7 +41,6 @@ float4 BrushHighLightColor;
 float BrushDistance;
 int BrushShape;
 
-
 static const float PI = 3.141592f;
 static const float HalfPI = 1.570796f;
 static const float Epsilon = 0.00001f;
@@ -221,10 +220,8 @@ float CalculateOffSet(float4 FlowData)
 	float TimeOffset = FlowData.a / 2.0f;
 	float WaveBackTime = FlowData.b * Time;
 	int EnableWaveBack = min(WaveBackTime * 1000, 1);
-
 	float2 NormalOffset = (Time / TexSize) % (TexSize + Epsilon);
 	float PulsingOffset = (WaveBackTime / 2.0f + sin(sin(WaveBackTime) + WaveBackTime * 1.5f) + TimeOffset) / TexSize;
-
 	return NormalOffset * (1 - EnableWaveBack) + abs(PulsingOffset * EnableWaveBack);
 }
 
@@ -280,13 +277,11 @@ float3 CalculateNormal(float Height, float D01, float D10, float D11, float D21,
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
 	VertexShaderOutput output = (VertexShaderOutput)0;
-
 	uint VID = input.VertexID / 6;
 
 	float4 WorldPos = float4(VID / TerrainLength, (VID % TerrainLength), 0, 1);
 	WorldPos.xy += TriangleVertices[Indices[input.VertexID % 6]];
 	WorldPos.xy *= TerrainScale;
-
 	WorldPos.xyz += Position.xyz;
 
 	float D01 = CalculateDisplacement(WorldPos.xy + float2(0, -TerrainScale));
@@ -338,7 +333,6 @@ float GetNormalDistribution(float CosLH, float Roughness)
 {
 	float Alpha = Roughness * Roughness;
 	float AlphaSQ = Alpha * Alpha;
-
 	float denom = (CosLH * CosLH) * (AlphaSQ - 1.0) + 1.0;
 	return AlphaSQ / (PI * denom * denom);
 }
@@ -366,10 +360,8 @@ float GetGeometrySmith(float CosLi, float CosLo, float Roughness)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
 	float3 WorldPosition = input.WorldSpacePosition;
-
 	float InvMatX = 1.0 / DataWidth;
 	float InvMatY = 1.0 / DataHeight;
-
 	float2 WorldUV = frac(WorldPosition / TexSize);
 
 	float PX = (WorldPosition.x - Position.x) / (TerrainWidth * TerrainScale);
@@ -482,7 +474,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
 	float4 ReflectColor = tex2D(ReflectionSampler, ReflectTex);
 	float4 RefractColor = tex2D(RefractionSampler, RefractTex);
-
 	float4 WaterColorData1 = tex2D(ColorDataSampler1, float2(PX, PY));
 
 	float3 ViewVector = normalize(input.ToCameraVector);
@@ -498,7 +489,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	DepthColorMult.a = clamp((ColorDistance * WaterColorData1.a * 5.0f), 0.0f, 1.0f);
 
 	float4 WaterColor = tex2D(ColorDataSampler0, float2(PX, PY));
-
 	float HasWaterColorDepth = min(DepthColorMult.a * 255, 1.0f);
 	float4 RefractWaterColor = lerp(RefractColor, float4(lerp(RefractColor.rgb, WaterColor.rgb, WaterColor.a), 1.0f), DepthColorMult.a) * HasWaterColorDepth + float4(lerp(RefractColor.rgb, WaterColor.rgb, WaterColor.a), 1.0f) * (1.0f - HasWaterColorDepth);
 
@@ -582,7 +572,6 @@ struct SecondVertexOutput
 SecondVertexOutput SecondVS(in VertexShaderInput input)
 {
 	SecondVertexOutput output = (SecondVertexOutput)0;
-
 	uint VID = input.VertexID / 6;
 
 	float4 WorldPos = float4(VID / TerrainLength, (VID % TerrainLength), 0, 1);
@@ -622,10 +611,8 @@ SecondVertexOutput SecondVS(in VertexShaderInput input)
 float4 SecondPS(SecondVertexOutput input) : COLOR
 {
 	float3 WorldPosition = input.WorldSpacePosition;
-
 	float InvMatX = 1.0 / DataWidth;
 	float InvMatY = 1.0 / DataHeight;
-
 	float2 WorldUV = frac(WorldPosition / TexSize);
 
 	float PX = (WorldPosition.x - Position.x) / (TerrainWidth * TerrainScale);
@@ -668,7 +655,6 @@ float4 SecondPS(SecondVertexOutput input) : COLOR
 
 	float4 MergedPixel = M1 + M2 + M3 + M4;
 	MergedPixel /= 4;
-
 	MergedPixel = lerp(MergedPixel, PassColor, 0.1f);
 
 	float4 Color = float4(0,0,0,0);
