@@ -20,11 +20,10 @@ namespace Main.WorldEditor
     {
         MenuManager Menu;
         CameraManager CameraManager { get; set; }
-
-        FileLoaderButton LoadMasteryFile;
+        
         ToggleButton NewMasteryFile;
-        SaveFileButton LookupSaveMasteryFile;
-        ToggleButton SaveMasteryFile;
+       
+
         TileSelectorButton LODSelector;
         TileSelectorButton ToolSelector, TerrainToolSelector, StructureToolSelector, ShovelShapeSelector, MaterialSelector, ShovelToolSelector;
         TileSelectorButton WaterHeightToolSelector, WaterMaterialToolSelector, WaveToolSelector, FoamToolSelector, WaterColorToolSelector;
@@ -36,17 +35,15 @@ namespace Main.WorldEditor
 
         TextButton ShovelRadius, HeightFlow;
         TextButton FlowMapX, FlowMapY, FoamRampButton0;
-
-        TextButton MasteryFileNameDisplay;
+        
         ToggleButton WaterHeightAdjustToggle;
         
         //TileSelectorButton ColorDebug, DepthDebug;
 
         TileSelectorButton WorldFileToolSelector;
-        FileLoaderButton LoadWorldFile;
+        
         ToggleButton NewWorldFile;
-        SaveFileButton LookupSaveWorldFile;
-        ToggleButton SaveWorldFile;
+       
 
         ToggleButton PropListUp, PropListDown, SelectOnCreationButton;
         ListButton PropList;
@@ -100,18 +97,11 @@ namespace Main.WorldEditor
             Render = RenderManager;
             MenuContainer = MapContainer;
 
-            LoadMasteryFile = (FileLoaderButton)MapContainer.ButtonList["LoadMasteryFile"];
+           
             NewMasteryFile = (ToggleButton)MapContainer.ButtonList["NewMasteryFile"];
-            LookupSaveMasteryFile = (SaveFileButton)MapContainer.ButtonList["LookupSaveMasteryFile"];
-            SaveMasteryFile = (ToggleButton)MapContainer.ButtonList["SaveMasteryFile"];
-
-            LoadWorldFile = (FileLoaderButton)MapContainer.ButtonList["LoadWorldFile"];
+           
             NewWorldFile = (ToggleButton)MapContainer.ButtonList["NewWorldFile"];
-            LookupSaveWorldFile = (SaveFileButton)MapContainer.ButtonList["LookupSaveWorldFile"];
-            SaveWorldFile = (ToggleButton)MapContainer.ButtonList["SaveWorldFile"];
-
-            MasteryFileNameDisplay = (TextButton)MapContainer.ButtonList["MasteryFileNameDisplay"];
-
+            
             ToolSelector = (TileSelectorButton)MapContainer.ButtonList["ToolSelector"];
             TerrainToolSelector = (TileSelectorButton)MapContainer.ButtonList["TerrainToolSelector"];
             StructureToolSelector = (TileSelectorButton)MapContainer.ButtonList["StructureToolSelector"];
@@ -198,9 +188,7 @@ namespace Main.WorldEditor
 
             //WorldFile Tools
             WorldFileToolSelector = (TileSelectorButton)MapContainer.ButtonList["WorldFileToolSelector"];
-
-            MasteryFileNameDisplay.Text = "No File";
-            MasteryFileNameDisplay.UpdateGeometry();
+            
 
             CollisionNode = new Node3D("CollisionNode");
             RootNode = new Node3D("WorldNode");
@@ -312,36 +300,15 @@ namespace Main.WorldEditor
             LastClick += GameTime.ElapsedGameTime.Milliseconds;
             LastClick %= 60000;
             
-            if (LoadMasteryFile.FileName != "")
-            {
-                WorldFileManager.LoadMasteryFile(LoadMasteryFile.FileName);
-
-                LoadMasteryFile.FileName = "";
-            }
-
             if (NewMasteryFile.IsToggled)
             {
                 WorldFileManager.CreateMasteryFile();
                 //clear current world Files
                 
-                MasteryFileNameDisplay.Text = "Untitled";
-                MasteryFileNameDisplay.UpdateGeometry();
                 FileRenderManager.UpdateRenderTargets();
                 NewMasteryFile.Toggle(false);
             }
-
-            if (LookupSaveMasteryFile.FileName != "")
-            {
-                WorldFileManager.SaveMasteryFile(LookupSaveMasteryFile.FileName);
-
-                LookupSaveMasteryFile.FileName = "";
-            }
-
-            if (SaveMasteryFile.IsToggled)
-            {
-                WorldFileManager.SaveMasteryFile("");
-                SaveMasteryFile.Toggle(false);
-            }
+            
 
             if (NewWorldFile.IsToggled)
             {
@@ -1139,10 +1106,7 @@ namespace Main.WorldEditor
             //EndStructure/Prop Tool
 
             WorldFileToolSelector.ToggleVisibility(SelectedTool == 2);
-            LoadWorldFile.ToggleVisibility(SelectedTool == 2);
             NewWorldFile.ToggleVisibility(SelectedTool == 2);
-            LookupSaveWorldFile.ToggleVisibility(SelectedTool == 2);
-            SaveWorldFile.ToggleVisibility(SelectedTool == 2);
 
             string[] PlaneLockAxis = new string[] { "--", "Z", "Y", "X" };
             PlaneLockButton.Text = PlaneLockAxis[PlaneLock];

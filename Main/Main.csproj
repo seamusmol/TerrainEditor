@@ -362,9 +362,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
-    <Content Include="Shaders-FX\WaterWIP.fx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Shaders\ColorSlider.mgfxo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -464,9 +461,6 @@
     <Content Include="Shaders-FX\Water.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Shaders-FX\WaterSimulation.fx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="ModelMaterials\Barrel-0-0.mmt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -501,7 +495,6 @@
   <ItemGroup>
     <Folder Include="VoxelPatterns\" />
     <Folder Include="WorldFiles\" />
-    <Folder Include="WorldMap\Test\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
