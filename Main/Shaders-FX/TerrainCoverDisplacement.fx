@@ -42,18 +42,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 {
 	float4 HeightRGBA = tex2D(HeightMapSampler, input.Coords).rgba;
 	int Height = (int(HeightRGBA.r * 255) << 24) + (int(HeightRGBA.g * 255) << 16) + (int(HeightRGBA.b * 255) << 8) + (int(HeightRGBA.a * 255));
-
 	//height relative to depth
 	float H = float(Height) * HeightScale + DepthOffset;
 	float Depth = FarPlane * tex2D(DepthMapSampler, input.Coords).r;
 
 	float4 OutputColor = float4(0,0,0,0);
-
-
 	OutputColor.r = H / FarPlane;
-	OutputColor.r = 0.5f;
-
-
 	OutputColor.a = 1.0f;
 
 	return OutputColor;
