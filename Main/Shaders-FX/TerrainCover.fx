@@ -31,7 +31,6 @@ float3 BrushPosition;
 float4 BrushHighLightColor;
 float BrushDistance;
 int BrushShape;
-//materials per quad
 
 static const float PI = 3.141592f;
 static const float Epsilon = 0.00001f;
@@ -138,7 +137,6 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	uint VID = input.VertexID / 6;
 
 	float4 WorldPos = float4(VID / TerrainHeight, (VID % TerrainHeight), 0, 1);
-	//WorldPos.xy += TriangleVertices[Indices[input.VertexID % 12]];
 
 	float3 Normal = float3(0, 0, 0);
 	float H = GetBilinearHeight(input.VertexID, Normal);
