@@ -261,8 +261,6 @@ float CalculateDisplacement(float2 WorldPos)
 	return tex2Dlod(NoiseSampler, float4(UV.xy + Offset.xy, 0, 0)).g * WaveData.y;
 }
 
-
-//Water Assumed to be Flat
 float3 CalculateNormal(float Height, float D01, float D10, float D11, float D21, float D12)
 {
 	float3 P01 = float3(-1.0f, 0.0f, Height - D01);
@@ -276,7 +274,7 @@ float3 CalculateNormal(float Height, float D01, float D10, float D11, float D21,
 	float3 N3 = normalize(-cross(P12 - P11, P21 - P11));
 	float3 N4 = normalize(-cross(P01 - P11, P12 - P11));
 
-	return (N1 + N2 + N3 + N4);
+	return (N1 + N2 + N3 + N4)/4;
 }
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -291,7 +289,6 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 	WorldPos.xyz += Position.xyz;
 
-	//calculate displacement for position+neighbors
 	float D01 = CalculateDisplacement(WorldPos.xy + float2(0, -TerrainScale));
 	float D10 = CalculateDisplacement(WorldPos.xy + float2(-TerrainScale, 0));
 	float D11 = CalculateDisplacement(WorldPos.xy + float2(0, 0));
@@ -301,7 +298,6 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	float PX = (WorldPos.x - Position.x) / (TerrainWidth * TerrainScale);
 	float PY = (WorldPos.y - Position.y) / (TerrainLength * TerrainScale);
 
-	//Get Own Height
 	float4 HeightRGBA00 = tex2Dlod(HeightMapSampler, float4(PX, PY, 0, 0)).rgba;
 	float4 WaterHeightRGBA00 = tex2Dlod(WaterHeightMapSampler, float4(PX, PY, 0, 0)).rgba;
 
@@ -322,15 +318,11 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 	float3x3 TBN = float3x3(Tangent, BiTangent, Normal);
 	output.TangentBasis = transpose(TBN);
-
 	output.WorldSpacePosition = WorldPos.xyz;
-
 	output.ScreenSpacePosition = World;
 	output.Position = World;
 	output.WaterDepth = max(WaterHeight* HeightScale, 0);
-
 	output.DepthZ = World.z / FarPlane;
-
 	output.ToCameraVector = CameraPosition - WorldPos.xyz;
 	output.FromLightVector = WorldPos.xyz - LightPosition;
 
@@ -418,7 +410,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	float2 FlowDir4 = (FlowData4.rg * 2.0f - 1.0f) * float2(-1.0f, 1.0f) * WaterSpeed;
 
 	float3 Noise = tex2D(NoiseSampler, WorldUV.xy).rgb;
-
 
 	float2 Offset0 = FlowDir0 * (CalculateOffSet(FlowData0));
 	float2 Offset1 = FlowDir1 * (CalculateOffSet(FlowData1));
@@ -512,9 +503,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	float4 DepthColorMult = float4(0,0,0,0);
 	float ColorDistance = (FloorDistance - WaterDistance) * 100.0f;
 
-	//Deeper-> Refraction Color Gets darker
-	//WaterColor -> Gets darker, less transparent
-
 	DepthColorMult.r = clamp(1.0f - (ColorDistance * WaterColorData1.a), 0.5f, 1.0f);
 	DepthColorMult.g = clamp(1.0f - (ColorDistance * WaterColorData1.a / 2.0f), 0.6f, 1.0f);
 	DepthColorMult.b = clamp(1.0f - (ColorDistance * WaterColorData1.a / 5.0f), 0.9f, 1.0f);
@@ -528,20 +516,14 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	RefractWaterColor /= HalfPI;
 	ReflectColor /= HalfPI;
 	RefractWaterColor = lerp(ReflectColor, RefractWaterColor, RefractiveFactor);
-
 	float4 ReflectRefractColor = RefractWaterColor;
 
 	float4 FoamTexture = tex2D(FoamSampler, WorldUV);
-
 	float FoamValue = FoamTexture.r * clamp(WaterColorData1.b, 0.0f, 0.33f) * 3.0f + FoamTexture.g * clamp(WaterColorData1.b - 0.33f, 0.0f, 0.33f) * 3.0f + FoamTexture.b * clamp(WaterColorData1.b - 0.66f, 0.0f, 0.33f) * 3.0f;
 
-	//Plug in PBR
 	float3 Albedo = ReflectRefractColor.rgb;
-
 	float3 FinalNormal = MixBump;
-	//FinalNormal *= WaterColorData1.r * 2.0f;
 	FinalNormal = lerp(float3(0, 0, 1), FinalNormal* 2.0f, WaterColorData1.r);
-
 	FinalNormal = normalize(mul(input.TangentBasis, FinalNormal));
 	float FinalRoughness = 0.14f;
 
@@ -726,6 +708,4 @@ technique BasicColorDrawing
 		VertexShader = compile VS_SHADERMODEL SecondVS();
 		PixelShader = compile PS_SHADERMODEL SecondPS();
 	}
-
-
 };
