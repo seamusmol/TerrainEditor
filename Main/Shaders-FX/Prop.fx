@@ -146,8 +146,6 @@ VertexShaderOutput MainVS(in VertexShaderInput input, VertexInstanceShaderInput 
 	float3 BiTangent = float3(0, 0, 0);
 	GenerateTanBiTan(input.Normal, Tangent, BiTangent);
 
-	//float3x3 TBN = float3x3(input.Tangent, cross(input.Normal, input.Tangent), input.Normal);
-
 	float3x3 TBN = float3x3(Tangent, BiTangent, input.Normal);
 	TBN = mul((float3x3)World, transpose(TBN));
 
@@ -157,7 +155,6 @@ VertexShaderOutput MainVS(in VertexShaderInput input, VertexInstanceShaderInput 
 	output.Position = ScreenSpacePosition;
 	output.WorldSpacePosition = WorldSpacePosition;
 	output.Normal = input.Normal;
-	//output.Tangent = input.Tangent;
 
 	output.PropData0 = instanceInput.PropData.x;
 
@@ -250,7 +247,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	float D = GetNormalDistribution(CosLh, Roughness);
 	float G = GetGeometrySmith(CosLi, CosLo, Roughness);
 
-
 	float3 KD = lerp(float3(1, 1, 1) - F, float3(0, 0, 0), Metalness);
 
 	float3 Diffuse = KD * Albedo;
@@ -259,7 +255,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
 	float3 DirectLighting = (Diffuse + Specular) * LightColor * CosLi;
 
-	//Ambient
 	float3 F2 = saturate(GetFresnel(CosLo, F0));
 	float3 KD2 = lerp(1.0 - F2, 0.0, Metalness);
 
@@ -273,12 +268,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
 	Color = Color * (1.0f - HasHighLight) + float4(lerp(Color.rgb, HighLightColors[input.PropData0], 0.5f), 1.0f) * HasHighLight;
 
-	//TODO
-	//Add HighLight
-
-	//Color = Color * 0.001f + float4(Albedo.rgb, 1.0f);
-	//Color = Color * 0.001f + float4(input.Tangent.rgb, 1.0f);
-	//Color = Color * 0.001f + float4(input.Normal.rgb, 1.0f);
 	return Color;
 }
 
