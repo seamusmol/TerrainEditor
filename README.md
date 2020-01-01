@@ -22,6 +22,7 @@ Water:
    This requires a water displacement distance greater than 0 to be noticeable.
   
 Water Material:
+ 
  Blue Wave Icon:
   The first icon controls water flow direction. Use the compass in the bottom left to control direction. 
   The second icon merges different water flow directions using the four corners of the screen highlight square and flow Value.
