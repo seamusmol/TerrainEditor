@@ -8,21 +8,21 @@ It is recommeneded to lightly apply brush to the terrain to avoid stuttering/mis
 Terrain Material:
  The first icon applies the main material to terrain.
  The second icon applies a secondary material to the terrain using linear interpolation. 
-   *The blending values is determined by the brush with the pencil and A icon.
+   The blending values is determined by the brush with the pencil and A icon.
  The third icon applies a decay to the terrain using overlay blending.
-   *The overlay blending value is determined by the brush with the pencil and A icon.
+   The overlay blending value is determined by the brush with the pencil and A icon.
 
 Water:
  This tab controls physical aspects of water.
  The top icon enables Water.
  The second and third icons allow leveling and adjustment of water height.
  The fourth and fifth icon control water displacement distance. 
-   *This requires a displacement height value greater than 0 to be noticeable.
+   This requires a displacement height value greater than 0 to be noticeable.
  The sixth and seventh icon control water displacement height. 
-   *This requires a water displacement distance greater than 0 to be noticeable.
+   This requires a water displacement distance greater than 0 to be noticeable.
   
 Water Material:
- *Blue Wave Icon:
+ Blue Wave Icon:
   The first icon controls water flow direction. Use the compass in the bottom left to control direction. 
   The second icon merges different water flow directions using the four corners of the screen highlight square and flow Value.
   The third icon sets the time offset for water flowback.
@@ -33,11 +33,11 @@ Water Material:
   The Sixth icon smoothens water normal values using the four corners of the screen highlight square and flow Value.
    
   
- *White Wave Icon:
+ White Wave Icon:
   The first icon applies foam to the water using the A icon value.
   The second icon smoothens foam using the four corners of the green highlight square and flow Value.
   
- *Pencil Icon:
+ Pencil Icon:
    The first icon sets the water color using the color slider in the bottom left corner.
    The second icon merges the water color using the four corners of the screen highlight square and flow Value.
    The third icon sets the reflectivity of the water. Normal water reflectivity has a refractive index of 1.33 or roughly A = 128.
