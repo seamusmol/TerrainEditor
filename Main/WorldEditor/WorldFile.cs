@@ -12,9 +12,6 @@ using System.Threading.Tasks;
 
 namespace Main.WorldEditor
 {
-    //TODO
-    //Change to 2d HeightMap
-    //midpoint is none modifiable
 
     public class WorldFile
     {
@@ -73,8 +70,6 @@ namespace Main.WorldEditor
              
         public bool HasTerrainUpdate { get; set; } = false;
         
-        //SX/SY = Meters n+1
-        
         public WorldFile(int LOD, int ChunkIDX, int ChunkIDY, int X, int Y, float Scale)
         {
             LODID = LOD;
@@ -107,7 +102,7 @@ namespace Main.WorldEditor
             FlowPulseSpeedMap = new byte[SX, SY];
 
             WaterMap = new byte[SX, SY];
-            //foam
+
             FoamRampMap0 = new byte[SX * WaterColorDensity + 1, SY * WaterColorDensity + 1];
             WaterColorFalloffMap = new byte[SX * WaterColorDensity + 1, SY * WaterColorDensity + 1];
 
@@ -129,9 +124,7 @@ namespace Main.WorldEditor
 
         public WorldFile(byte[] Data)
         {
-            //LOD
-            //IDX
-            //IDY
+
             int ByteCount = 0;
 
             LODID = BitConverter.ToInt32(Data,ByteCount += 4);
@@ -149,9 +142,7 @@ namespace Main.WorldEditor
             int DataLength5 = BitConverter.ToInt32(Data, ByteCount += 4);
             int DataLength6 = BitConverter.ToInt32(Data, ByteCount += 4);
             int DataLength7 = BitConverter.ToInt32(Data, ByteCount += 4);
-
-            //HeightMap = CompressionUtil.UnPackToIntArray( SX + 1, SY + 1, Data, ByteCount += 4, DataLength0);
-
+            
             MaterialMap = CompressionUtil.UnPackToByteArray(SX + 1, SY + 1, Data, ByteCount += 4, DataLength1);
             SecondaryMaterialMap = CompressionUtil.UnPackToByteArray(SX + 1, SY + 1, Data, ByteCount += 4, DataLength0);
             DecalMaterialMap = CompressionUtil.UnPackToByteArray(SX + 1, SY + 1, Data, ByteCount += 4, DataLength0);
@@ -358,20 +349,10 @@ namespace Main.WorldEditor
                     TerrainUtil.ApplySquareBrush(X1, X2, Y1, Y2, Q, Array, AdjustmentArray, Shape, Tool, Radius, IsPrimary ? 1 : -1, Flow);
                     TerrainUtil.AdjustWaterHeight(OldArray, Array, AdjustmentArray);
                 }
-
             }
-
             HasTerrainUpdate = true;
         }
         
-
-        /*
-        public void RemoveWaterUnderTerrain()
-        {
-            TerrainUtil.RemoveWaterBelowTerrain(WaterMap, WaterHeightMap);
-        }
-        */
-
         public Vector3 GetLocalCenterPoint()
         {
             return new Vector3(HeightMap.GetLength(0) * TerrainScale * 0.5f, HeightMap.GetLength(1) * TerrainScale * 0.5f, 0);
@@ -437,7 +418,6 @@ namespace Main.WorldEditor
 
             for (int i = 0; i < properties.Length; i++)
             {
-                //Debug.WriteLine(properties[i].Name);
                 if (properties[i].Name == MapName)
                 {
                     if (properties[i].GetValue(this).GetType() == IntArray.GetType())
@@ -481,7 +461,6 @@ namespace Main.WorldEditor
             
             for (int i = 0; i < properties.Length; i++)
             {
-                //Debug.WriteLine(properties[i].Name);
                 if (properties[i].Name == MapName)
                 {
                     if (properties[i].GetValue(this).GetType() == IntArray.GetType())

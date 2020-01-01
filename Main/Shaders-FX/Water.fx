@@ -274,7 +274,7 @@ float3 CalculateNormal(float Height, float D01, float D10, float D11, float D21,
 	float3 N3 = normalize(-cross(P12 - P11, P21 - P11));
 	float3 N4 = normalize(-cross(P01 - P11, P12 - P11));
 
-	return (N1 + N2 + N3 + N4)/4;
+	return (N1 + N2 + N3 + N4) / 4;
 }
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -411,30 +411,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
 	float3 Noise = tex2D(NoiseSampler, WorldUV.xy).rgb;
 
-	float2 Offset0 = FlowDir0 * (CalculateOffSet(FlowData0));
-	float2 Offset1 = FlowDir1 * (CalculateOffSet(FlowData1));
-	float2 Offset2 = FlowDir2 * (CalculateOffSet(FlowData2));
-	float2 Offset3 = FlowDir3 * (CalculateOffSet(FlowData3));
-	float2 Offset4 = FlowDir4 * (CalculateOffSet(FlowData4));
-
-	float2 Offset0B = FlowDir0 * (CalculateOffSet(FlowData0) + 0.5f);
-	float2 Offset1B = FlowDir1 * (CalculateOffSet(FlowData1) + 0.5f);
-	float2 Offset2B = FlowDir2 * (CalculateOffSet(FlowData2) + 0.5f);
-	float2 Offset3B = FlowDir3 * (CalculateOffSet(FlowData3) + 0.5f);
-	float2 Offset4B = FlowDir4 * (CalculateOffSet(FlowData4) + 0.5f);
-
-	float3 Normal0 = tex2D(WaveSampler, WorldUV.xy + Offset0) / 8.0f;
-	float3 NormalA = tex2D(WaveSampler, WorldUV.xy + Offset1);
-	float3 NormalB = tex2D(WaveSampler, WorldUV.xy + Offset2);
-	float3 NormalC = tex2D(WaveSampler, WorldUV.xy + Offset3);
-	float3 NormalD = tex2D(WaveSampler, WorldUV.xy + Offset4);
-
-	float3 Normal0P = tex2D(WaveSampler2, WorldUV.xy + Offset0B) / 8.0f;
-	float3 NormalAP = tex2D(WaveSampler2, WorldUV.xy + Offset1B);
-	float3 NormalBP = tex2D(WaveSampler2, WorldUV.xy + Offset2B);
-	float3 NormalCP = tex2D(WaveSampler2, WorldUV.xy + Offset3B);
-	float3 NormalDP = tex2D(WaveSampler2, WorldUV.xy + Offset4B);
-
 	float FlowVal0 = max(abs(FlowDir0.x), abs(FlowDir0.y));
 	float FlowVal1 = max(abs(FlowDir1.x), abs(FlowDir1.y));
 	float FlowVal2 = max(abs(FlowDir2.x), abs(FlowDir2.y));
@@ -447,17 +423,30 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	float PulseLerp3 = saturate(abs(1 - (FlowVal3 * (Time + Noise.b) + Noise.b) % 2.0));
 	float PulseLerp4 = saturate(abs(1 - (FlowVal4 * (Time + Noise.b) + Noise.b) % 2.0));
 
-	//lerp pulse
-	float3 PulseNormal0 = lerp(Normal0, Normal0P, PulseLerp0);
-	float3 PulseNormalA = lerp(NormalA, NormalAP, PulseLerp1);
-	float3 PulseNormalB = lerp(NormalB, NormalBP, PulseLerp2);
-	float3 PulseNormalC = lerp(NormalC, NormalCP, PulseLerp3);
-	float3 PulseNormalD = lerp(NormalD, NormalDP, PulseLerp4);
+	float3 PulseNormal0 = lerp(
+		tex2D(WaveSampler, WorldUV.xy + FlowDir0 * (CalculateOffSet(FlowData0))) / 8.0f,
+		tex2D(WaveSampler2, WorldUV.xy + FlowDir0 * (CalculateOffSet(FlowData0) + 0.5f)) / 8.0f,
+		PulseLerp0);
 
-	float3 LerpA = lerp(PulseNormal0, PulseNormalA, PDA);
-	float3 LerpB = lerp(PulseNormal0, PulseNormalB, PDB);
-	float3 LerpC = lerp(PulseNormal0, PulseNormalC, PDC);
-	float3 LerpD = lerp(PulseNormal0, PulseNormalD, PDD);
+	float3 LerpA = lerp(
+		PulseNormal0,
+		lerp(tex2D(WaveSampler, WorldUV.xy + FlowDir1 * (CalculateOffSet(FlowData1))), tex2D(WaveSampler2, WorldUV.xy + FlowDir1 * (CalculateOffSet(FlowData1) + 0.5f)), PulseLerp1),
+		PDA);
+
+	float3 LerpB = lerp(
+		PulseNormal0,
+		lerp(tex2D(WaveSampler, WorldUV.xy + FlowDir2 * (CalculateOffSet(FlowData2))), tex2D(WaveSampler2, WorldUV.xy + FlowDir2 * (CalculateOffSet(FlowData2) + 0.5f)), PulseLerp2),
+		PDB);
+
+	float3 LerpC = lerp(
+		PulseNormal0,
+		lerp(tex2D(WaveSampler, WorldUV.xy + FlowDir3 * (CalculateOffSet(FlowData3))), tex2D(WaveSampler2, WorldUV.xy + FlowDir3 * (CalculateOffSet(FlowData3) + 0.5f)), PulseLerp3),
+		PDC);
+
+	float3 LerpD = lerp(
+		PulseNormal0,
+		lerp(tex2D(WaveSampler, WorldUV.xy + FlowDir4 * (CalculateOffSet(FlowData4))), tex2D(WaveSampler2, WorldUV.xy + FlowDir4 * (CalculateOffSet(FlowData4) + 0.5f)), PulseLerp4),
+		PDD);
 
 	float FlowLerpA = lerp(FlowVal0, FlowVal1, PDA);
 	float FlowLerpB = lerp(FlowVal0, FlowVal2, PDB);
@@ -527,7 +516,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	FinalNormal = normalize(mul(input.TangentBasis, FinalNormal));
 	float FinalRoughness = 0.14f;
 
-	//Plugin Final Values into BDFR
 	float3 LO = normalize(CameraPosition - input.WorldSpacePosition);
 	float3 LI = normalize(LightPosition - input.WorldSpacePosition);
 	float3 LH = normalize(LO + LI);
@@ -663,17 +651,16 @@ float4 SecondPS(SecondVertexOutput input) : COLOR
 	float WaterDepthZ = Depth - Depth2;
 	float IsVisible = min(ceil(WaterDepthZ), 1.0);
 
-	//Set First pixel Normal to invisible 
 	float EdgeDist = max(max(abs(0.5f - PD.x) - 0.465f, abs(0.5f - PD.y) - 0.465f), 0.0f);
 	float IsEdge = ceil(EdgeDist);
 
 	float4 PassColor = tex2D(SceneColorSampler, ProjectiveCoord);
-	//apply blend to edge
+
 	float2 NDCA = float2(input.ClipSpaceA.x / input.ClipSpaceA.w / 2.0f + 0.5f, input.ClipSpaceA.y / input.ClipSpaceA.w / 2.0f + 0.5f);
 	float2 NDCB = float2(input.ClipSpaceB.x / input.ClipSpaceB.w / 2.0f + 0.5f, input.ClipSpaceB.y / input.ClipSpaceB.w / 2.0f + 0.5f);
 	float2 NDCC = float2(input.ClipSpaceC.x / input.ClipSpaceC.w / 2.0f + 0.5f, input.ClipSpaceC.y / input.ClipSpaceC.w / 2.0f + 0.5f);
 	float2 NDCD = float2(input.ClipSpaceD.x / input.ClipSpaceD.w / 2.0f + 0.5f, input.ClipSpaceD.y / input.ClipSpaceD.w / 2.0f + 0.5f);
-	//sample surrounding Texels
+
 	float4 M1 = tex2D(SceneColorSampler, float2(NDCA.x, -NDCA.y));
 	float4 M2 = tex2D(SceneColorSampler, float2(NDCB.x, -NDCB.y));
 	float4 M3 = tex2D(SceneColorSampler, float2(NDCC.x, -NDCC.y));
@@ -685,7 +672,6 @@ float4 SecondPS(SecondVertexOutput input) : COLOR
 	MergedPixel = lerp(MergedPixel, PassColor, 0.1f);
 
 	float4 Color = float4(0,0,0,0);
-
 	Color = (Color * (1.0f - IsEdge) + MergedPixel * IsEdge) * IsVisible;
 
 	float HasBrush = 0;

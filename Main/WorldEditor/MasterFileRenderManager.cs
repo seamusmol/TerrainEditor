@@ -136,9 +136,7 @@ namespace Main.WorldEditor
             ReflectionRenderTarget.AttachRange(ReflectionUpdateList);
             RefractionRenderTarget.AttachRange(RefractionUpdateList);
             DepthMapRenderTarget.AttachRange(DepthUpdateList);
-
             
-            //Render.RenderTargetNode.Attach(ReflectionNode);
         }
         
         public void UpdatePreRender(GameTime GameTime)
@@ -179,9 +177,6 @@ namespace Main.WorldEditor
             UpdateActiveLodChunks(GameTime);
             //Rendering Management
             GenerateTerrainGeometries();
-
-            //PropManagement
-            //CalculatePropLOD();
             
             PropStructureContainer.Update(Render.Graphics, FileManager.MasteryFile.Props, FileManager.MasteryFile.Structures);
         }
@@ -195,7 +190,6 @@ namespace Main.WorldEditor
             { 
                 if (Settings.LODMode == 0)
                 {
-                    //pause
                     return;
                 }
                 else if (Settings.LODMode == 1)
@@ -209,7 +203,6 @@ namespace Main.WorldEditor
                             Prop.LOD = j;
                             break;
                         }
-                        
                     }
                 }
                 else
@@ -279,7 +272,6 @@ namespace Main.WorldEditor
 
             if (Settings.LODMode == 0)
             {
-                //pause
                 return;
             }
             else if (Settings.LODMode == 1)
@@ -467,12 +459,7 @@ namespace Main.WorldEditor
                 }
             }
         }
-
-        public static int[] Indices =
-        {
-            3,1,0, 0,2,3
-        };
-
+        
         public int GetChunkLOD(Vector3 Position)
         {
             if (FileManager.MasteryFile == null)
@@ -514,6 +501,11 @@ namespace Main.WorldEditor
         {
             return RayCastTerrain(Origin,Direction,Range, TerrainGeometry.WorldFile);
         }
+
+        public static int[] Indices =
+        {
+            3,1,0, 0,2,3
+        };
 
         public CollisionResults RayCastTerrain(Vector3 Origin, Vector3 Direction, float Range, WorldFile File)
         {
@@ -708,8 +700,6 @@ namespace Main.WorldEditor
                                 Vector3 VertexWorldPosition = ActiveWorldFiles[i].GetPosition() + new Vector3(VX * TerrainScale, VY * TerrainScale, 0);
                                 for (int k = 0; k < Indices.Length; k+=3)
                                 {
-                                    //Vertices.Add(VertexWorldPosition + QuadVertices[Indices[k]]);
-                                    
                                     Vector3 V0 = VertexWorldPosition + QuadVertices[Indices[k]];
                                     Vector3 V1 = VertexWorldPosition + QuadVertices[Indices[k + 1]];
                                     Vector3 V2 = VertexWorldPosition + QuadVertices[Indices[k + 2]];
@@ -796,9 +786,7 @@ namespace Main.WorldEditor
                             Vector3 V0 = VertexWorldPosition + QuadVertices[Indices[k]];
                             Vector3 V1 = VertexWorldPosition + QuadVertices[Indices[k + 1]];
                             Vector3 V2 = VertexWorldPosition + QuadVertices[Indices[k + 2]];
-
-                            //if (CollisionUtil.Intersect(Vertices[i], Vertices[i + 1], Vertices[i + 2], Origin, Direction))
-                            //{
+                            
                             if (CollisionUtil.Intersect(V0, V1, V2, Origin, Direction))
                             {
                                 TerrainWaterContainer WaterGeom = WaterGeometries.Where(x => x.WorldFile.FileName == FileManager.CurrentWorldFile.FileName).First();
@@ -841,7 +829,6 @@ namespace Main.WorldEditor
             CollisionResults Results = new CollisionResults();
 
             List<Vector2> QuadCheck = new List<Vector2>();
-            //List<Vector3> Vertices = new List<Vector3>();
 
             if (HasCurrentChunkLock)
             {
@@ -886,8 +873,6 @@ namespace Main.WorldEditor
                             
                             for (int k = 0; k < Indices.Length; k += 3)
                             {
-                                //Vertices.Add(VertexWorldPosition + QuadVertices[Indices[k]]);
-
                                 Vector3 V0 = VertexWorldPosition + QuadVertices[Indices[k]];
                                 Vector3 V1 = VertexWorldPosition + QuadVertices[Indices[k + 1]];
                                 Vector3 V2 = VertexWorldPosition + QuadVertices[Indices[k + 2]];
@@ -1029,8 +1014,6 @@ namespace Main.WorldEditor
             CollisionResult Result = Results.GetClosest();
             int SelectedLOD = FileManager.CurrentWorldFile.LODID;
             
-            //single point,
-          
             //Editing Bounds
             Vector2 A1 = new Vector2(Result.CollisionPoint.X - Radius, Result.CollisionPoint.Y - BrushRadius);
             Vector2 A2 = new Vector2(Result.CollisionPoint.X + Radius, Result.CollisionPoint.Y + BrushRadius);
@@ -1041,7 +1024,6 @@ namespace Main.WorldEditor
                 {
                     continue;
                 }
-
                 Vector2 B1 = TerrainGeometries[i].WorldFile.GetA();
                 Vector2 B2 = TerrainGeometries[i].WorldFile.GetB();
 

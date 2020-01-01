@@ -63,24 +63,7 @@ namespace Main.WorldEditor
             int[] LOD = WorldSettings.LOD;
             Vector3 FilePosition = WorldFile.GetPosition();
             float Distance = Math.Min(Math.Abs(Position.X - FilePosition.X), Math.Abs(Position.Y - FilePosition.Y));
-
-            /*
-            int LODIndex = 0;
-            for (int j = 0; j < LOD.Length; j++)
-            {
-                if (LOD[j] < Distance)
-                {
-                    LODIndex = j;
-                }
-            }
             
-
-            if (LODIndex != CurrentLOD)
-            {
-                GenerateGeometry(Graphics, WorldSettings, Position);
-            }
-            */
-
             if (MaterialData0.Width != WorldFile.MaterialMap.GetLength(0) || MaterialData0.Height != WorldFile.MaterialMap.GetLength(1))
             {
                 MaterialData0.Dispose();
@@ -98,14 +81,12 @@ namespace Main.WorldEditor
                
                 TerrainGeometry.DepthShader.Parameters["HeightScale"].SetValue(WorldFile.HeightScale);
                 TerrainGeometry.Shader.Parameters["HeightScale"].SetValue(WorldFile.HeightScale);
-
-                //HeightMap = GraphicsUtil.MaterialMapsToTexture(Render.Graphics, SurfaceFormat.Color, WorldFile.HeightMap);
                 
                 GraphicsUtil.FillTexture(HeightMap, WorldFile.HeightMap);
                 
                 GraphicsUtil.FillTexture(MaterialData0, WorldFile.MaterialMap, WorldFile.SecondaryMaterialMap, WorldFile.DecalMaterialMap, WorldFile.DecalMaterialMap);
                 GraphicsUtil.FillTexture(MaterialData1, WorldFile.BlendAlphaMap, WorldFile.DecalAlphaMap, WorldFile.DecalAlphaMap, WorldFile.DecalAlphaMap);
-                //
+
                 TerrainGeometry.Shader.Parameters["TerrainWidth"].SetValue(WorldFile.SX);
                 TerrainGeometry.Shader.Parameters["TerrainHeight"].SetValue(WorldFile.SY);
                 TerrainGeometry.Shader.Parameters["MaterialWidth"].SetValue(WorldFile.MaterialMap.GetLength(0));
@@ -113,17 +94,11 @@ namespace Main.WorldEditor
 
                 TerrainGeometry.Shader.Parameters["MaterialData0"].SetValue(MaterialData0);
                 TerrainGeometry.Shader.Parameters["MaterialData1"].SetValue(MaterialData1);
-                //add Material Map
+
                 TerrainGeometry.Shader.Parameters["HeightMap"].SetValue(HeightMap);
                 TerrainGeometry.DepthShader.Parameters["HeightMap"].SetValue(HeightMap);
-                //GenerateNormals.FrameLimit++;
-                //GenerateNormals.AddParameter(TextureParameter.InputTexture, HeightMap);
-                //Render.AddTextureModificationTask(GenerateNormals);
             }
             
-            //Vector3 ChunkPosition = new Vector3(WorldFile.IDX * WorldFile.SX * WorldFile.TerrainScale, WorldFile.IDY * WorldFile.SY * WorldFile.TerrainScale, 0);
-            //TerrainGeometry.Shader.Parameters["Position"].SetValue(ChunkPosition);
-
             Vector3 LightPosition = new Vector3(0,0,20);
 
             TerrainGeometry.Shader.Parameters["CameraPosition"].SetValue(Position);

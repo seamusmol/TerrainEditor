@@ -9,10 +9,6 @@ using System.Threading.Tasks;
 
 namespace Main.Util
 {
-    /// <summary>
-    /// This Static Library Class stores methods for Terrain Modification
-    /// </summary>
-
     public static class TerrainUtil
     {
         public static void RemoveWaterBelowTerrain(byte[,] WaterMap, int[,] WaterHeightMap)
@@ -297,7 +293,6 @@ namespace Main.Util
             }
             else if (Tool == 5)
             {
-                
                 if (AdjustmentMap.GetLength(0) == AffectedMap.GetLength(0) && AdjustmentMap.GetLength(1) == AffectedMap.GetLength(1))
                 {
                     if (X1 >= 0 && X2 < AffectedMap.GetLength(0) && Y1 >= 0 && Y2 < AffectedMap.GetLength(1))
@@ -325,7 +320,6 @@ namespace Main.Util
             {
                 if (Shape == 0)
                 {
-                    //single square
                     if (X1 >= 0 && Y1 >= 0 && X1 < AffectedMap.GetLength(0) && Y1 < AffectedMap.GetLength(1))
                     {
                         AffectedMap[X1, Y1] = (byte)Q[0, 0];
@@ -429,7 +423,6 @@ namespace Main.Util
             {
                 if (Shape == 0)
                 {
-                    //single square
                     if (X1 >= 0 && Y1 >= 0 && X1 < AffectedMap.GetLength(0) && Y1 < AffectedMap.GetLength(1))
                     {
                         AffectedMap[X1, Y1] = Q[0, 0];
@@ -546,7 +539,6 @@ namespace Main.Util
                             if (i >= 0 && j >= 0 && i < WaterMap.GetLength(0) && j < WaterMap.GetLength(1))
                             {
                                 WaterHeightMap[i, j] = (short)(WaterHeightMap[i, j] > 0 ? WaterHeightMap[i, j] : 0);
-
                                 WaterMap[i, j] = HasWater;
                             }
                         }
