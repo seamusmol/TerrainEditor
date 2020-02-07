@@ -39,9 +39,11 @@ Water Material:<br/>
  </ul>
   
  White Wave Icon: <br/>
-  The first icon applies foam to the water using the A icon value.<br/>
-  The second icon smoothens foam using the four corners of the green highlight square and flow Value.<br/>
-   <br/>
+ <ul>
+  <li>The first icon applies foam to the water using the A icon value.</li>
+  <li>The second icon smoothens foam using the four corners of the green highlight square and flow Value.</li>
+ </ul> 
+ <br/>
  Pencil Icon:
  <ul>
    <li>The first icon sets the water color using the color slider in the bottom left corner.</li>
@@ -63,8 +65,7 @@ Controls: <br/>
  <li>Rotate Camera Left: Q </li>
  <li>Rotate Camera Right: E </li>
  <li>Rotate Camera: Hold Middle Mouse + Move Mouse</li>
- <br/>
- <li> Camera Movement: WASD </li>
+ <li>Camera Movement: WASD </li>
  <li>Camera Movement Up: Left Shift </li>
  <li>Camera Movement Down: Left Control </li>
 </ul>
