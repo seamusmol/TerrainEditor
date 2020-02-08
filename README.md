@@ -73,6 +73,7 @@ Controls: <br/>
 Prop Controls: <br/>
 <ul>
  <li>Move Object: T </li>
+ <li>Set New Position: Left Mouse</li>
  <li>Set Movement Axis: X,Y,Z </li>
  <li>Select Object: Right Mouse </li>
  <li>Deselect Object: Right Mouse(not on object) </li>
