@@ -12,9 +12,9 @@ Terrain Material:
  <ul>
  <li>The first icon applies the main material to terrain.</li>
  <li>The second icon applies a secondary material to the terrain using linear interpolation.</li>
-   The blending values is determined by the brush with the pencil and A icon.
+   <ul><li>The blending values is determined by the brush with the pencil and A icon.</li></ul>
  <li>The third icon applies a decay to the terrain using overlay blending.</li>
-   The overlay blending value is determined by the brush with the pencil and A icon.</li>
+   <ul><li>The overlay blending value is determined by the brush with the pencil and A icon.</li></ul>
 </ul>
 Water:<br/>
 <ul>
