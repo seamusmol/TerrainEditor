@@ -32,9 +32,9 @@ Blue Wave Icon:<br/>
   <li>The first icon controls water flow direction. Use the compass in the bottom left to control direction. </li>
   <li>The second icon merges different water flow directions using the four corners of the screen highlight square and flow Value.</li>
   <li>The third icon sets the time offset for water flowback.</li>
-  *This is only noticeable when the flowback value of water is greater than zero.
+   <ul><li>This is only noticeable when the flowback value of water is greater than zero.</li></ul>
   <li>The fourth icon sets the flowback speed of water.</li>
-  *This feature is useful for waves bouncing off the shorelines.
+   <ul><li>This feature is useful for waves bouncing off the shorelines.</li></ul>
   <li>The Fifth icon sets the normal insensity of water.</li>
   <li>The Sixth icon smoothens water normal values using the four corners of the screen highlight square and flow Value.</li>
  </ul>
