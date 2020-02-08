@@ -1,4 +1,4 @@
-Note:
+Note:<br/>
 Run Visual Studio as Adminstrator before opening project.<br/>
 In order to start editing terrain, click on the file(+) icon and then click on the file(+) icon under the WorldFile Tab.<br/>
 Add Additional Chunks: Click on WordFile Tab then click on the desired region and click on the file(+) icon under the WordFile Tab.<br/>
