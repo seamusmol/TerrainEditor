@@ -22,21 +22,18 @@ Water:<br/>
  <li>The second and third icons allow leveling and adjustment of water height.</li>
  <li>The fourth and fifth icon control water displacement distance. </li>
   <ul><li>This requires a displacement height value greater than 0 to be noticeable.</li></ul>
- <li>The sixth and seventh icon control water displacement height.</li>
+ <li>The sixth and seventh icon control water displacement height.</li></ul>
   <ul><li>This requires a water displacement distance greater than 0 to be noticeable.</li></ul>
 </ul>
 Water Material:<br/>
-
-
-
 Blue Wave Icon:<br/>
  <ul>
   <li>The first icon controls water flow direction. Use the compass in the bottom left to control direction. </li>
   <li>The second icon merges different water flow directions using the four corners of the screen highlight square and flow Value.</li>
   <li>The third icon sets the time offset for water flowback.</li>
-  <ul><li>This is only noticeable when the flowback value of water is greater than zero.</li></ul>
+  *This is only noticeable when the flowback value of water is greater than zero.
   <li>The fourth icon sets the flowback speed of water.</li>
-  <ul><li>This feature is useful for waves bouncing off the shorelines.</li></ul>
+  *This feature is useful for waves bouncing off the shorelines.
   <li>The Fifth icon sets the normal insensity of water.</li>
   <li>The Sixth icon smoothens water normal values using the four corners of the screen highlight square and flow Value.</li>
  </ul>
